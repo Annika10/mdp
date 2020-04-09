@@ -92,4 +92,45 @@ In den Anführungsstrichen ist die Modifikation in dem vorgegebenen Format nöti
 
 Im letzten Schritt muss der Text aus der Output Datei in TexMaker kopiert werden und ausgeführt werden.
 Hier sind möglicherweise noch letzte manuelle Änderungen nötig.
-- 1. Besonderheiten: 
+- Besonderheiten: Die Sätze für Besonderheiten müssen manuelle zu Ende geschrieben werden.
+- neue Seiten: es müssen manuell entschieden werden, wann eine neue Seite anfängt. 
+Für neue Seiten benutzt man den Befehl:
+
+	\clearpage
+	
+Falls eine neue Linie benötigt wird benutzt man den Befehl:
+
+	\par\noindent\rule{\textwidth}{0.4pt}
+ 
+- Texte: die Texte am Ende müssen manuell eingefügt werden. 
+Dafür braucht man eventuell noch eine Linie. 
+Die kann man auch mit dem oberen Befehl einfügen. 
+Um eine Überschrift für einen Text zu erstellen, benutzt man nach der Überschrift den Befehl 
+
+	\newline
+
+Eventuell braucht man diese auch im Text bei sehr langen Wörtern (z.B. Mail-Adresse).
+Außerdem kann man einen link für die Mailadresse erstellen mit dem Befehl: 
+
+	\textcolor{blue}{\underline{\href{mailto:annika.oesterdiekhoff@ewe.net}{annika.oesterdiekhoff@ewe.net}}}
+
+Im Folgenden ein gesamter Beispiel-Text:
+
+	Spieletag im Pfarrheim: \newlinee
+	Am 08.03.2020 wollen wir mit euch zusammen einen Spielenachmittag veranstalten. Wir treffen uns um 14 Uhr am Pfarrheim, wo ihr dann um 17 Uhr wieder abholt werden könnt. 
+	Bitte meldet euch bis zum 01.03.2020 per Mail \newline \textcolor{blue}{\underline{\href{mailto:annika.oesterdiekhoff@ewe.net}{annika.oesterdiekhoff@ewe.net}}} oder per Whatsapp 0151-21370220 an
+	
+Im Allgemeinen kann man einen Text auch fett schreiben: 
+
+	\textbf{}
+	
+oder kursiv mit:
+
+	\textit{}
+	
+oder unterstrichen: 
+
+	\underline{}
+	
+in dem man innerhalb der Klammern schreibt. 
+	
