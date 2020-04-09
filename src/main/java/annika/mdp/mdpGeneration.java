@@ -13,21 +13,24 @@ public class mdpGeneration {
 
 	// TODO: insert startdate, enddate, newEnddate and redaktionsschluss of mdp in
 	// format: DD.MM.YYYY
-	// output in: C:/Users/annik/Documents/mdp/TexDateien/TexDatei.txt with number
+
 	static String startdate = "22.02.2020";
 	static String enddate = "05.04.2020";
 	static String number = "165";
 	static String newStartdate = enddate;
 	static String newEnddate = "17.03.2020";
 	static String redaktionsschluss = "21.03.2020";
+	
+	// output in: C:/Users/annik/Documents/mdp/TexDateien/TexDatei.txt with number
+	static String output = "C:/Users/annik/Documents/mdp/TexDateien/TexDatei" + number + ".txt";
 
 	public static void main(String[] args) {
 		try {
 			BufferedWriter bw = new BufferedWriter(
-					new FileWriter("C:/Users/annik/Documents/mdp/TexDateien/TexDatei" + number + ".txt"));
+					new FileWriter(output));
 			kopfZeile(bw);
 			titel(bw, startdate, enddate, number);
-			name(bw, startdate, enddate);
+			fill(bw, startdate, enddate);
 			fussZeile(bw, newStartdate, newEnddate, redaktionsschluss);
 			bw.close();
 		} catch (IOException e) {
@@ -145,7 +148,7 @@ public class mdpGeneration {
 		}
 	}
 
-	public static void name(BufferedWriter bw, String startdate, String enddate) {
+	public static void fill(BufferedWriter bw, String startdate, String enddate) {
 		try {
 			BufferedReader brLeiterrunde = new BufferedReader(
 					new FileReader("C:/Users/annik/Documents/mdp/MDPLeiterrundeTransponiert.csv"));
@@ -221,6 +224,7 @@ public class mdpGeneration {
 						ArrayList<Integer> zeros = new ArrayList<Integer>();
 						ArrayList<Integer> normalosLeiterrunde = new ArrayList<Integer>();
 						ArrayList<Integer> normalosMessdiener = new ArrayList<Integer>();
+						ArrayList<Integer> flambeauxMessdiener = new ArrayList<Integer>();
 
 						for (int i = 13; i < cellsLeiterrunde.length; i++) {
 							if (cellsLeiterrunde[i].equals("1")) {
@@ -235,6 +239,9 @@ public class mdpGeneration {
 							if (cellsMessdiener[i].equals("1")) {
 								normalosMessdiener.add(i);
 							}
+							if (cellsMessdiener[i].equals("2")) {
+								flambeauxMessdiener.add(i);
+							}
 						}
 
 						if (cellsLeiterrunde[12].equals("")) {
@@ -245,8 +252,15 @@ public class mdpGeneration {
 							if (!normalosLeiterrunde.isEmpty()) {
 								writeNormal(bw, normalosLeiterrunde, nameMapLeiterrunde);
 							}
+							
+							// flambeaux der Messdiener in file schreiben
+							if(!flambeauxMessdiener.isEmpty()) {
+								writeNormal(bw, flambeauxMessdiener, nameMapMessdiener);
+							}
 							// normalos der Messdiener in file schreiben
 							writeNormal(bw, normalosMessdiener, nameMapMessdiener);
+							
+
 						} else {
 							if(!zeros.isEmpty()) {
 								writeZero(bw, zeros, nameMapLeiterrunde, cellsLeiterrunde[11]);
