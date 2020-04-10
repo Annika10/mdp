@@ -40,6 +40,7 @@ public class mdpGeneration {
 
 	public static void kopfZeile(BufferedWriter bw) {
 		try {
+			//packages einbinden
 			bw.write("\\documentclass[11pt,a4paper]{article}");
 			bw.newLine();
 			bw.write("\\usepackage{times}");
@@ -57,6 +58,9 @@ public class mdpGeneration {
 			bw.write("\\pgfplotsset{compat=1.8}");
 			bw.newLine();
 			bw.newLine();
+			
+			// new environment für besondere tabs festlegen
+			// dadurch kein rand oben und unten beim benutzen der tabs
 			bw.write("\\newenvironment{nstabbing}");
 			bw.newLine();
 			bw.write("\t{\\setlength{\\topsep}{-\\parskip}%");
@@ -68,6 +72,9 @@ public class mdpGeneration {
 			bw.write("\t{\\endtabbing}");
 			bw.newLine();
 			bw.newLine();
+			
+			// document beginnen
+			// beide bilder einbinden vom mdp
 			bw.write("\\begin{document}");
 			bw.newLine();
 			bw.newLine();
@@ -99,6 +106,7 @@ public class mdpGeneration {
 
 	public static void titel(BufferedWriter bw, String startdate, String enddate, String number) {
 		try {
+			// Titel und Nummer schreiben
 			bw.newLine();
 			bw.write("\\begin{center}");
 			bw.newLine();
@@ -120,6 +128,7 @@ public class mdpGeneration {
 
 	public static void fussZeile(BufferedWriter bw, String newStartdate, String newEnddate, String redaktionsschluss) {
 		try {
+			// Kasten unten definieren
 			bw.newLine();
 			bw.write("\\vspace*{\\fill}");
 			bw.newLine();
@@ -155,6 +164,7 @@ public class mdpGeneration {
 			BufferedReader brMessdiener = new BufferedReader(
 					new FileReader("C:/Users/annik/Documents/mdp/MDPMessdienerTransponiert.csv"));
 
+			//Zeilen, Zellen und Namen der Leiterrunde
 			String nextLineLeiterrunde = brLeiterrunde.readLine();
 			String[] cellsLeiterrunde = nextLineLeiterrunde.split(";");
 			Map<Integer, String> nameMapLeiterrunde = new HashMap<Integer, String>();
@@ -163,6 +173,7 @@ public class mdpGeneration {
 				nameMapLeiterrunde.put(i, cellsLeiterrunde[i]);
 			}
 
+			//Zeilen, Zellen und Namen der Messdiener
 			String nextLineMessdiener = brMessdiener.readLine();
 			String[] cellsMessdiener = nextLineMessdiener.split(";");
 			Map<Integer, String> nameMapMessdiener = new HashMap<Integer, String>();
@@ -171,23 +182,25 @@ public class mdpGeneration {
 				nameMapMessdiener.put(i, cellsMessdiener[i]);
 			}
 
+			// bis zur Zeile laufen, die das akutelle Startdate beinhaltet
 			while (!cellsLeiterrunde[0].equals(startdate)) {
 				nextLineLeiterrunde = brLeiterrunde.readLine();
 				cellsLeiterrunde = nextLineLeiterrunde.split(";");
 			}
-
+			
+			// bis zur Zeile laufen, die das akutelle Startdate beinhaltet
 			while (!cellsMessdiener[0].equals(startdate)) {
 				nextLineMessdiener = brMessdiener.readLine();
 				cellsMessdiener = nextLineMessdiener.split(";");
 			}
 
 			String oldDate = "";
-			// change to enddate!
+			// TODO: abfragen des enddates!
+			// guckt sich die Zeilen an, bis die erste Zelle einer Zeile leer ist. 
 			while (!cellsLeiterrunde[0].equals("")) {
-				// 36 elements for Leiterrunde
-				// Metadaten vorhanden?
+				// checken ob die Metadaten vorhanden sind 
 				if (cellsLeiterrunde.length > 13 && cellsMessdiener.length > 12) {
-					// check if metadaten are the same! --> datum
+					// check ob die Metadaten in beiden Excel Tabellen gleich sind 
 					if (cellsLeiterrunde[0].equals(cellsMessdiener[0]) &&
 					// wochentag
 							cellsLeiterrunde[6].equals(cellsMessdiener[5]) &&
@@ -203,29 +216,25 @@ public class mdpGeneration {
 							cellsLeiterrunde[11].equals(cellsMessdiener[10]) &&
 							// besonderes
 							cellsLeiterrunde[12].equals(cellsMessdiener[11])) {
-						bw.newLine();
 						// schreib den Wochentag
-						// falls 2 Messen an einem Tag
+						// falls 2 Messen an einem Tag, abprüfen, ob das Datum schon geschrieben wurde
 						if (!oldDate.equals(cellsLeiterrunde[0])) {
 							writeWochentag(bw, cellsLeiterrunde[6], cellsLeiterrunde[0], cellsLeiterrunde[7]);
 						}
-						bw.newLine();
-						// eventuell früher Treffen
+						// falls früher Treffen, Treffen einfügen
 						if (!cellsLeiterrunde[10].equals("")) {
 							writeTreffen(bw, cellsLeiterrunde[10]);
 						}
-						bw.newLine();
 						// schreib die Messe
 						writeMesse(bw, cellsLeiterrunde[8], cellsLeiterrunde[9]);
-						bw.newLine();
-						// schreib die Messdiener
+						// schreib die Personen
 						// erstmal messdiener für die messe in liste sammeln
-						// wenn keine Besonderheit ist
 						ArrayList<Integer> zeros = new ArrayList<Integer>();
 						ArrayList<Integer> normalosLeiterrunde = new ArrayList<Integer>();
 						ArrayList<Integer> normalosMessdiener = new ArrayList<Integer>();
 						ArrayList<Integer> flambeauxMessdiener = new ArrayList<Integer>();
 
+						// Leiterrunden Messdiener sammeln
 						for (int i = 13; i < cellsLeiterrunde.length; i++) {
 							if (cellsLeiterrunde[i].equals("1")) {
 								zeros.add(i);
@@ -235,6 +244,7 @@ public class mdpGeneration {
 							}
 						}
 
+						// Messdiener sammeln
 						for (int i = 12; i < cellsMessdiener.length; i++) {
 							if (cellsMessdiener[i].equals("1")) {
 								normalosMessdiener.add(i);
@@ -244,16 +254,17 @@ public class mdpGeneration {
 							}
 						}
 
+						// wenn in der Messe keine Besonderheit ist
 						if (cellsLeiterrunde[12].equals("")) {
 							// zeros in file schreiben
 							writeZero(bw, zeros, nameMapLeiterrunde, cellsLeiterrunde[11]);
 
-							// normalos der Leiterrunde in file schreiben
+							// normalos der Leiterrunde in file schreiben --> eventuell keine normalos vorhanden
 							if (!normalosLeiterrunde.isEmpty()) {
 								writeNormal(bw, normalosLeiterrunde, nameMapLeiterrunde);
 							}
 							
-							// flambeaux der Messdiener in file schreiben
+							// flambeaux der Messdiener in file schreiben --> eventuell keine flambeaux vorhanden
 							if(!flambeauxMessdiener.isEmpty()) {
 								writeNormal(bw, flambeauxMessdiener, nameMapMessdiener);
 							}
@@ -262,6 +273,7 @@ public class mdpGeneration {
 							
 
 						} else {
+							// bei Besonderheit gibt es eventuell Zero
 							if(!zeros.isEmpty()) {
 								writeZero(bw, zeros, nameMapLeiterrunde, cellsLeiterrunde[11]);
 							}
@@ -274,7 +286,11 @@ public class mdpGeneration {
 				} else {
 					System.err.println("Error: " + cellsLeiterrunde[0]);
 				}
+				
+				// altes Datum speichern, für mehrere Messe an einem Tag
 				oldDate = cellsLeiterrunde[0];
+				
+				// alten Wochentag speichern, um einen Linie nur bei der letzten Messe eines Tages zu machen 
 				String oldWochentag = "";
 				if(cellsLeiterrunde.length >= 6) {
 					oldWochentag = cellsLeiterrunde[6];
@@ -286,7 +302,8 @@ public class mdpGeneration {
 				nextLineMessdiener = brMessdiener.readLine();
 				cellsMessdiener = nextLineMessdiener.split(";");
 				
-				// Linie machen
+				// Linie machen, außer der Tag ist ein Samstag oder es gibt mehrere Messe an dem Tag --> dann erst hinter
+				// der letzen Messe
 				if(!oldWochentag.equals("Sa") && !oldDate.equals(cellsLeiterrunde[0])) {
 					writeLinie(bw);
 				}
@@ -301,11 +318,15 @@ public class mdpGeneration {
 	public static void writeWochentag(BufferedWriter bw, String wochentag, String datum, String name) {
 		try {
 			bw.newLine();
+			bw.newLine();
 			bw.write("\\textbf{\\underline{" + wochentag + ". " + datum);
+			
+			// eventuell hat der Tag einen Namen
 			if (!name.equals("")) {
 				bw.write(": " + name);
 			}
 			bw.write("}}");
+			bw.newLine();
 			bw.newLine();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -314,7 +335,6 @@ public class mdpGeneration {
 
 	public static void writeMesse(BufferedWriter bw, String uhrzeit, String nameMesse) {
 		try {
-			bw.newLine();
 			bw.write("\\textbf{" + uhrzeit + " Uhr " + nameMesse + ":}");
 			bw.newLine();
 		} catch (IOException e) {
@@ -341,6 +361,7 @@ public class mdpGeneration {
 			bw.write("\\hspace*{2.5cm}\\=\\hspace*{5cm}\\= \\kill");
 			bw.newLine();
 
+			// Falls es eine Anbetung gibt, diese hinter Zeros hinzufügen
 			String addAnbetung = "";
 			if (anbetung.equals("ja")) {
 				addAnbetung = " (16:15 Uhr)";
@@ -348,21 +369,27 @@ public class mdpGeneration {
 
 			if (zeros.size() == 1) {
 				bw.write("\\> \\underline{" + nameMap.get(zeros.get(0)) + addAnbetung + "} \\>");
+			
+			// gerade Anzahl von Zeros 
 			} else if ((zeros.size() % 2) == 0) {
 				for (int i = 0; i < zeros.size(); i += 2) {
 					bw.write("\\> \\underline{" + nameMap.get(zeros.get(i)) + addAnbetung + "} \\> \\underline {"
 							+ nameMap.get(zeros.get(i + 1)) + addAnbetung + "}");
+					// bei der letzten Zeile sollen keine \\ am Ende sein
 					if (!((i + 2) == zeros.size())) {
 						bw.write(" \\\\");
 						bw.newLine();
 					}
 				}
+			
+			// ungerade Anzahl von Zeros, der letzte Zero hat in der Tab Umgebung eine leere Stelle
 			} else if (!((zeros.size() % 2) == 0)) {
 				for (int i = 0; i < zeros.size() - 1; i += 2) {
 					bw.write("\\> \\underline{" + nameMap.get(zeros.get(i)) + addAnbetung + "} \\> \\underline {"
 							+ nameMap.get(zeros.get(i + 1)) + addAnbetung + "}" + " \\\\");
 					bw.newLine();
 				}
+				// bei der letzten Zeile sollen keine \\ am Ende sein
 				bw.write("\\> \\underline{" + nameMap.get(zeros.get(zeros.size() - 1)) + addAnbetung + "} \\>");
 			}
 
@@ -378,6 +405,9 @@ public class mdpGeneration {
 
 	public static void writeNormal(BufferedWriter bw, ArrayList<Integer> normalos, Map<Integer, String> nameMap) {
 		try {
+			
+			// siehe Kommentare bei writeZero
+			
 			bw.write("\\begin{nstabbing}");
 			bw.newLine();
 			bw.write("\\hspace*{2.5cm}\\=\\hspace*{5cm}\\= \\kill");
@@ -415,6 +445,8 @@ public class mdpGeneration {
 
 	public static void writeBesonderes(BufferedWriter bw) {
 		try {
+			// bei Besonderheit kursiv schreiben 
+			
 			bw.write("\\begin{nstabbing}");
 			bw.newLine();
 			bw.write("\\hspace*{2.5cm}\\=\\hspace*{5cm}\\= \\kill");

@@ -37,6 +37,8 @@ Es ist nicht möglich schon weitere Daten einzutragen.
 Zum Bearbeiten der Excel Tabelle immer die ".xlsx" Datei öffnen und auch speichern und erst dann die Datei auch als ".csv" speichern. 
 Grund dafür ist, dass man durch das Speichern als ".csv" Informationen verliert, wie zum Beispiel bedingte Formatierungen.
 
+**Wichtig**: bei den folgenden Metadaten müssen die Angaben in beiden Excel Tabellen gleich sein, ansonsten funktioniert das Programm nicht!
+
 Die nicht fett geschrieben Wörter, sind optionale Felder.
 - **Datum**: Das Datum muss das Format TT.MM.YYYY haben
 - Name Tag: Hier angeben, wie der Tag heißt, z.B. "1. Sonntag im Jahreskreis". Die Zelle kann auch leer bleiben, falls es keinen Namen für den Tag gibt
@@ -113,7 +115,8 @@ Eventuell braucht man diese auch im Text bei sehr langen Wörtern (z.B. Mail-Adr
 Außerdem kann man einen link für die Mailadresse erstellen mit dem Befehl: 
 
 	\textcolor{blue}{\underline{\href{mailto:annika.oesterdiekhoff@ewe.net}{annika.oesterdiekhoff@ewe.net}}}
-
+
+
 Im Folgenden ein gesamter Beispiel-Text:
 
 	Spieletag im Pfarrheim: \newlinee
@@ -133,4 +136,7 @@ oder unterstrichen:
 	\underline{}
 	
 in dem man innerhalb der Klammern schreibt. 
-	
+
+Nach dem Ausführen muss man in "C:\Users\annik\Documents\mdp\latex" die .pdf-Datei nehmen und hat den fertigen MDP!
+
+Wichtig: im oben genannten latex Ordner müssen die Bilder "kopf1" und kopf2" enthalten sein!	
