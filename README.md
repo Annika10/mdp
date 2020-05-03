@@ -98,7 +98,7 @@ Hier sind möglicherweise noch letzte manuelle Änderungen nötig.
 - neue Seiten: es müssen manuell entschieden werden, wann eine neue Seite anfängt. 
 Für neue Seiten benutzt man den Befehl:
 
-	\clearpage
+	\newpage
 	
 Falls eine neue Linie benötigt wird benutzt man den Befehl:
 
@@ -133,10 +133,10 @@ oder kursiv mit:
 	
 oder unterstrichen: 
 
-	\underline{}
+	\ul{}
 	
 in dem man innerhalb der Klammern schreibt. 
 
-Nach dem Ausführen muss man in "C:\Users\annik\Documents\mdp\latex" die .pdf-Datei nehmen und hat den fertigen MDP!
+Nach dem Ausführen muss man in "C:\Users\annik\Documents\mdp\latex" die .pdf-Datei nehmen und man hat den fertigen MDP!
 
 Wichtig: im oben genannten latex Ordner müssen die Bilder "kopf1" und kopf2" enthalten sein!	

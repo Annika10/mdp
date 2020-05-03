@@ -41,7 +41,7 @@ public class mdpGeneration {
 	public static void kopfZeile(BufferedWriter bw) {
 		try {
 			//packages einbinden
-			bw.write("\\documentclass[11pt,a4paper]{article}");
+			bw.write("\\documentclass[11pt,a4paper,twocolumn]{article}");
 			bw.newLine();
 			bw.write("\\usepackage{times}");
 			bw.newLine();
@@ -55,21 +55,17 @@ public class mdpGeneration {
 			bw.newLine();
 			bw.write("\\usepackage{hyperref}");
 			bw.newLine();
+			bw.write("\\usepackage{pdflscape}");
+			bw.newLine();
+			bw.write("\\usepackage{hyperref}");
+			bw.newLine();
+			bw.write("\\usepackage[landscape=true, left=1cm,right=1cm,top=2cm,bottom=2cm,bindingoffset=5mm]{geometry}");
+			bw.newLine();
+			bw.write("\\usepackage{soulutf8}");
+			bw.newLine();
+			bw.write("\\usepackage{setspace}");
+			bw.newLine();
 			bw.write("\\pgfplotsset{compat=1.8}");
-			bw.newLine();
-			bw.newLine();
-			
-			// new environment für besondere tabs festlegen
-			// dadurch kein rand oben und unten beim benutzen der tabs
-			bw.write("\\newenvironment{nstabbing}");
-			bw.newLine();
-			bw.write("\t{\\setlength{\\topsep}{-\\parskip}%");
-			bw.newLine();
-			bw.write("\t\\setlength{\\partopsep}{0pt}%");
-			bw.newLine();
-			bw.write("\t\\tabbing}");
-			bw.newLine();
-			bw.write("\t{\\endtabbing}");
 			bw.newLine();
 			bw.newLine();
 			
@@ -78,11 +74,17 @@ public class mdpGeneration {
 			bw.write("\\begin{document}");
 			bw.newLine();
 			bw.newLine();
+			bw.write("\\raggedbottom");
+			bw.newLine();
+			bw.newLine();
+			bw.write("\\setuldepth{a}");
+			bw.newLine();
+			bw.newLine();
 			bw.write("\\begin{figure}[!htp]");
 			bw.newLine();
 			bw.write("\t\\centering");
 			bw.newLine();
-			bw.write("\t\\includegraphics[width=13cm]{kopf1}");
+			bw.write("\t\\includegraphics[width=10cm]{kopf1}");
 			bw.newLine();
 			bw.write("\t\\label{fig:kopf1}");
 			bw.newLine();
@@ -93,7 +95,7 @@ public class mdpGeneration {
 			bw.newLine();
 			bw.write("\t\\centering");
 			bw.newLine();
-			bw.write("\t\\includegraphics[width=13cm]{kopf2}");
+			bw.write("\t\\includegraphics[width=10cm]{kopf2}");
 			bw.newLine();
 			bw.write("\t\\label{fig:kopf2}");
 			bw.newLine();
@@ -118,7 +120,7 @@ public class mdpGeneration {
 			bw.write("\\end{center}");
 			bw.newLine();
 			bw.newLine();
-			bw.write("\\par\\noindent\\rule{\\textwidth}{2pt}");
+			bw.write("\\par\\noindent\\rule{\\linewidth}{2pt}");
 			bw.newLine();
 			bw.newLine();
 		} catch (IOException e) {
@@ -134,12 +136,12 @@ public class mdpGeneration {
 			bw.newLine();
 			bw.write("\\begin{center}");
 			bw.newLine();
-			bw.write("\\par\\noindent\\rule{\\textwidth}{0.4pt}");
+			bw.write("\\par\\noindent\\rule{\\linewidth}{0.4pt}");
 			bw.newLine();
 			bw.write(
 					"\\small{\\textit{Verbindlich sind in Bezug auf die Zeiten der Gottesdienste, soweit nicht anders angegeben, nur die Angaben in den Pfarrnachrichten!}}");
 			bw.newLine();
-			bw.write("\\par\\noindent\\rule{\\textwidth}{0.4pt}");
+			bw.write("\\par\\noindent\\rule{\\linewidth}{0.4pt}");
 			bw.newLine();
 			bw.write(
 					"\\small{\\textit{Die Wünsche für die Messdienerpläne sind abzugeben bei Marina und Annika Österdiekhoff – Feldhagen 5 – 33129 Delbrück – annika.oesterdiekhoff@ewe.net}}");
@@ -261,23 +263,29 @@ public class mdpGeneration {
 
 							// normalos der Leiterrunde in file schreiben --> eventuell keine normalos vorhanden
 							if (!normalosLeiterrunde.isEmpty()) {
-								writeNormal(bw, normalosLeiterrunde, nameMapLeiterrunde);
+								writeNormal(bw, normalosLeiterrunde, nameMapLeiterrunde, true);
 							}
 							
 							// flambeaux der Messdiener in file schreiben --> eventuell keine flambeaux vorhanden
 							if(!flambeauxMessdiener.isEmpty()) {
-								writeNormal(bw, flambeauxMessdiener, nameMapMessdiener);
+								if(!normalosMessdiener.isEmpty()) {
+									writeNormal(bw, flambeauxMessdiener, nameMapMessdiener, true);
+								} else {
+									writeNormal(bw, flambeauxMessdiener, nameMapMessdiener, false);
+								}
 							}
 							// normalos der Messdiener in file schreiben
-							writeNormal(bw, normalosMessdiener, nameMapMessdiener);
+							writeNormal(bw, normalosMessdiener, nameMapMessdiener, false);
 							
 
 						} else {
 							// bei Besonderheit gibt es eventuell Zero
 							if(!zeros.isEmpty()) {
 								writeZero(bw, zeros, nameMapLeiterrunde, cellsLeiterrunde[11]);
+								writeBesonderes(bw, true);
+							} else {
+								writeBesonderes(bw, false);
 							}
-							writeBesonderes(bw);
 						}
 						
 					} else {
@@ -319,7 +327,7 @@ public class mdpGeneration {
 		try {
 			bw.newLine();
 			bw.newLine();
-			bw.write("\\textbf{\\underline{" + wochentag + ". " + datum);
+			bw.write("\\textbf{\\ul{" + wochentag + ". " + datum);
 			
 			// eventuell hat der Tag einen Namen
 			if (!name.equals("")) {
@@ -335,7 +343,10 @@ public class mdpGeneration {
 
 	public static void writeMesse(BufferedWriter bw, String uhrzeit, String nameMesse) {
 		try {
+			bw.newLine();
+			bw.newLine();
 			bw.write("\\textbf{" + uhrzeit + " Uhr " + nameMesse + ":}");
+			bw.newLine();
 			bw.newLine();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -356,28 +367,30 @@ public class mdpGeneration {
 			String anbetung) {
 		try {
 
-			bw.write("\\begin{nstabbing}");
-			bw.newLine();
-			bw.write("\\hspace*{2.5cm}\\=\\hspace*{5cm}\\= \\kill");
+			bw.write("\\begin{tabular}{p{1.5cm}p{5cm}l}");
 			bw.newLine();
 
 			// Falls es eine Anbetung gibt, diese hinter Zeros hinzufügen
 			String addAnbetung = "";
 			if (anbetung.equals("ja")) {
-				addAnbetung = " (16:15 Uhr)";
+				addAnbetung = " (16:15h)";
 			}
 
 			if (zeros.size() == 1) {
-				bw.write("\\> \\underline{" + nameMap.get(zeros.get(0)) + addAnbetung + "} \\>");
+				bw.write("& \\ul{" + nameMap.get(zeros.get(0)) + addAnbetung + "} \\\\[0.25\\normalbaselineskip]");
+				bw.newLine();
 			
 			// gerade Anzahl von Zeros 
 			} else if ((zeros.size() % 2) == 0) {
 				for (int i = 0; i < zeros.size(); i += 2) {
-					bw.write("\\> \\underline{" + nameMap.get(zeros.get(i)) + addAnbetung + "} \\> \\underline {"
+					bw.write("& \\ul{" + nameMap.get(zeros.get(i)) + addAnbetung + "} & \\ul{"
 							+ nameMap.get(zeros.get(i + 1)) + addAnbetung + "}");
-					// bei der letzten Zeile sollen keine \\ am Ende sein
+					// bei der letzten Zeile soll am Ende mini absatz sein
 					if (!((i + 2) == zeros.size())) {
 						bw.write(" \\\\");
+						bw.newLine();
+					} else {
+						bw.write(" \\\\[0.25\\normalbaselineskip]");
 						bw.newLine();
 					}
 				}
@@ -385,75 +398,70 @@ public class mdpGeneration {
 			// ungerade Anzahl von Zeros, der letzte Zero hat in der Tab Umgebung eine leere Stelle
 			} else if (!((zeros.size() % 2) == 0)) {
 				for (int i = 0; i < zeros.size() - 1; i += 2) {
-					bw.write("\\> \\underline{" + nameMap.get(zeros.get(i)) + addAnbetung + "} \\> \\underline {"
+					bw.write("& \\ul{" + nameMap.get(zeros.get(i)) + addAnbetung + "} & \\ul{"
 							+ nameMap.get(zeros.get(i + 1)) + addAnbetung + "}" + " \\\\");
 					bw.newLine();
 				}
-				// bei der letzten Zeile sollen keine \\ am Ende sein
-				bw.write("\\> \\underline{" + nameMap.get(zeros.get(zeros.size() - 1)) + addAnbetung + "} \\>");
+				// bei der letzten Zeile soll am Ende mini absatz sein
+				bw.write("& \\ul{" + nameMap.get(zeros.get(zeros.size() - 1)) + addAnbetung + "} & \\\\[0.25\\normalbaselineskip]");
+				bw.newLine();
 			}
-
-			bw.write("\\end{nstabbing}");
-			bw.newLine();
-			bw.write("\\vspace{0.2cm}");
-			bw.newLine();
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void writeNormal(BufferedWriter bw, ArrayList<Integer> normalos, Map<Integer, String> nameMap) {
+	public static void writeNormal(BufferedWriter bw, ArrayList<Integer> normalos, Map<Integer, String> nameMap, boolean gibtFolgende) {
 		try {
 			
 			// siehe Kommentare bei writeZero
 			
-			bw.write("\\begin{nstabbing}");
-			bw.newLine();
-			bw.write("\\hspace*{2.5cm}\\=\\hspace*{5cm}\\= \\kill");
-			bw.newLine();
-
 			if (normalos.size() == 1) {
-				bw.write("\\> " + nameMap.get(normalos.get(0)) + " \\> ");
+				bw.write("& " + nameMap.get(normalos.get(0)) + " & \\\\[0.25\\normalbaselineskip]");
 			} else if ((normalos.size() % 2) == 0) {
 				for (int i = 0; i < normalos.size(); i += 2) {
-					bw.write("\\> " + nameMap.get(normalos.get(i)) + " \\> " + nameMap.get(normalos.get(i + 1)));
+					bw.write("& " + nameMap.get(normalos.get(i)) + " & " + nameMap.get(normalos.get(i + 1)));
+					// bei der letzten Zeile soll am Ende mini absatz sein
 					if (!((i + 2) == normalos.size())) {
 						bw.write(" \\\\");
+						bw.newLine();
+					} else {
+						bw.write(" \\\\[0.25\\normalbaselineskip]");
 						bw.newLine();
 					}
 				}
 			} else if (!((normalos.size() % 2) == 0)) {
 				for (int i = 0; i < normalos.size() - 1; i += 2) {
-					bw.write("\\> " + nameMap.get(normalos.get(i)) + " \\> " + nameMap.get(normalos.get(i + 1))
+					bw.write("& " + nameMap.get(normalos.get(i)) + " & " + nameMap.get(normalos.get(i + 1))
 							+ " \\\\");
 					bw.newLine();
 				}
-				bw.write("\\> " + nameMap.get(normalos.get(normalos.size() - 1)) + " \\> ");
+				bw.write("& " + nameMap.get(normalos.get(normalos.size() - 1)) + " & \\\\[0.25\\normalbaselineskip]");
 			}
 
 			bw.newLine();
-			bw.write("\\end{nstabbing}");
-			bw.newLine();
-			bw.write("\\vspace{0.2cm}");
-			bw.newLine();
+			
+			if(gibtFolgende == false) {
+				bw.write("\\end{tabular}");
+				bw.newLine();
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void writeBesonderes(BufferedWriter bw) {
+	public static void writeBesonderes(BufferedWriter bw, boolean withZero) {
 		try {
 			// bei Besonderheit kursiv schreiben 
-			
-			bw.write("\\begin{nstabbing}");
+			if(withZero == false) {
+				bw.write("\\begin{tabular}{p{1.5cm}p{5cm}l}");
+				bw.newLine();
+			}
+			bw.write("& \\textit{Es dien...} & \\\\");
 			bw.newLine();
-			bw.write("\\hspace*{2.5cm}\\=\\hspace*{5cm}\\= \\kill");
-			bw.newLine();
-			bw.write("\\> \\textit{Es dien...} \\> \\\\");
-			bw.newLine();
-			bw.write("\\end{nstabbing}");
+			bw.write("\\end{tabular}");
 			bw.newLine();
 
 		} catch (IOException e) {
@@ -465,7 +473,7 @@ public class mdpGeneration {
 		try {
 			bw.newLine();
 			bw.newLine();
-			bw.write("\\par\\noindent\\rule{\\textwidth}{0.4pt}");
+			bw.write("\\par\\noindent\\rule{\\linewidth}{0.4pt}");
 			bw.newLine();
 			bw.newLine();
 
