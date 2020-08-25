@@ -78,12 +78,12 @@ Als nächstes muss das Java Programm ausgeführt werden.
 Dafür muss die Klasse "mdpGeneration.java" erst modifiziert und dann kompiliert und ausgeführt werden.
 Folgende Modifikationen sind möglich, dabei sind die Wörter in Sternchen auf jeden Fall nötig zu ändern:
 	
-	static String startdate = "DD.MM.YYYY";
-	static String enddate = "DD.MM.YYYY";
-	static String number = "Nummer";
+	static String startdate = "**DD.MM.YYYY**";
+	static String enddate = "**DD.MM.YYYY**";
+	static String number = "**Nummer**";
 	static String newStartdate = enddate;
-	static String newEnddate = "DD.MM.YYYY";
-	static String redaktionsschluss = "DD.MM.YYYY";
+	static String newEnddate = "**DD.MM.YYYY**";
+	static String redaktionsschluss = "**DD.MM.YYYY**";
 	static String output = "C:/Users/annik/Documents/mdp/TexDateien/TexDatei" + number + ".txt";
 
 In den Anführungsstrichen ist die Modifikation in dem vorgegebenen Format nötig. 
