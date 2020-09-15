@@ -119,7 +119,7 @@ Außerdem kann man einen link für die Mailadresse erstellen mit dem Befehl:
 
 Im Folgenden ein gesamter Beispiel-Text:
 
-	Spieletag im Pfarrheim: \newlinee
+	Spieletag im Pfarrheim: \newline
 	Am 08.03.2020 wollen wir mit euch zusammen einen Spielenachmittag veranstalten. Wir treffen uns um 14 Uhr am Pfarrheim, wo ihr dann um 17 Uhr wieder abholt werden könnt. 
 	Bitte meldet euch bis zum 01.03.2020 per Mail \newline \textcolor{blue}{\underline{\href{mailto:annika.oesterdiekhoff@ewe.net}{annika.oesterdiekhoff@ewe.net}}} oder per Whatsapp 0151-21370220 an
 	
