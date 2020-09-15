@@ -9,20 +9,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import annika.mdp.PersonalData;
+
 public class mdpGeneration {
 
 	// TODO: insert startdate, enddate, newEnddate and redaktionsschluss of mdp in
 	// format: DD.MM.YYYY
 
-	static String startdate = "22.02.2020";
-	static String enddate = "05.04.2020";
-	static String number = "165";
+	static String startdate = "05.09.2020";
+	static String enddate = "18.10.2020";
+	static String number = "Test";
 	static String newStartdate = enddate;
-	static String newEnddate = "17.03.2020";
-	static String redaktionsschluss = "21.03.2020";
+	static String newEnddate = "29.11.2020";
+	static String redaktionsschluss = "03.10.2020";
 	
+	static PersonalData pd = new PersonalData();
 	// output in: C:/Users/annik/Documents/mdp/TexDateien/TexDatei.txt with number
-	static String output = "C:/Users/annik/Documents/mdp/TexDateien/TexDatei" + number + ".txt";
+	static String output = pd.outputFile + "TexDatei" + number + ".txt";
 
 	public static void main(String[] args) {
 		try {
@@ -144,7 +147,7 @@ public class mdpGeneration {
 			bw.write("\\par\\noindent\\rule{\\linewidth}{0.4pt}");
 			bw.newLine();
 			bw.write(
-					"\\small{\\textit{Die Wünsche für die Messdienerpläne sind abzugeben bei Marina und Annika Österdiekhoff – Feldhagen 5 – 33129 Delbrück – annika.oesterdiekhoff@ewe.net}}");
+					"\\small{\\textit{Die Wünsche für die Messdienerpläne sind abzugeben bei " + pd.name +" – " + pd.street +" – " + pd.plz +" – " + pd.mailadress +"}}");
 			bw.newLine();
 			bw.write("\\end{center}");
 			bw.newLine();
@@ -162,9 +165,9 @@ public class mdpGeneration {
 	public static void fill(BufferedWriter bw, String startdate, String enddate) {
 		try {
 			BufferedReader brLeiterrunde = new BufferedReader(
-					new FileReader("C:/Users/annik/Documents/mdp/MDPLeiterrundeTransponiert.csv"));
+					new FileReader(pd.inputFileLeiterrunde));
 			BufferedReader brMessdiener = new BufferedReader(
-					new FileReader("C:/Users/annik/Documents/mdp/MDPMessdienerTransponiert.csv"));
+					new FileReader(pd.inputFileMessdiener));
 
 			//Zeilen, Zellen und Namen der Leiterrunde
 			String nextLineLeiterrunde = brLeiterrunde.readLine();
