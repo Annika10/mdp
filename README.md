@@ -1,5 +1,16 @@
 # MDP Programm
 
+# Wichtig
+In der Datei ExamplePersonalData muss die folgende Zeile geändert werden, damit der Code funktioniert:
+	
+	public class ExamplePersonalData {
+
+ändern zu:
+
+	public class PersonalData {
+	
+Dann müssen die Strings in der ExamplePersonalData.java auf die eigene Situation angepasst werden.
+
 # Grobes Vorgehen 
 
 1. Excel ausfüllen 
