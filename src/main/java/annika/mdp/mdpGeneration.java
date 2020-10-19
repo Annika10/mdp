@@ -16,12 +16,12 @@ public class mdpGeneration {
 	// TODO: insert startdate, enddate, newEnddate and redaktionsschluss of mdp in
 	// format: DD.MM.YYYY
 
-	static String startdate = "05.09.2020";
-	static String enddate = "18.10.2020";
-	static String number = "Test";
+	static String startdate = "16.10.2020";
+	static String enddate = "29.11.2020";
+	static String number = "171";
 	static String newStartdate = enddate;
-	static String newEnddate = "29.11.2020";
-	static String redaktionsschluss = "03.10.2020";
+	static String newEnddate = "10.01.2021";
+	static String redaktionsschluss = "14.11.2020";
 	
 	static PersonalData pd = new PersonalData();
 	// output in: C:/Users/annik/Documents/mdp/TexDateien/TexDatei.txt with number
